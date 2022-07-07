@@ -12,10 +12,25 @@ import {
 } from "./Repos.Elements";
 import Card from "../../components/Card/Card";
 
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 const Repos = () => {
   const user = useSelector(SelectorsData.getUser);
   const [reposit, setReposit] = useState();
   const [search, setSearch] = useState("");
+  const testeValue = useDebounce(search, 1000);
   console.log(user);
 
   const handleRepos = async () => {
@@ -26,6 +41,31 @@ const Repos = () => {
       console.log(error);
     }
   };
+
+  // ?q=${search} user%3A${user?.login} in%3Aname
+
+  const handleSearch = async () => {
+    try {
+      const response = await api.get(`https://api.github.com/search/repositories?`, {
+        params: {
+          q: `${search} user:${user?.login} in:name`,
+          
+        }
+
+      });
+      setReposit(response.data.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if(testeValue.trim()){
+      handleSearch()
+    } else {
+      handleRepos();
+    }
+  }, [testeValue]); //eslint-disable-line
 
   useEffect(() => {
     handleRepos();
@@ -44,7 +84,8 @@ const Repos = () => {
           placeholder="Pesquise por seus repositorios"
           textAlign="center"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)
+          }
         />
       </ReposContent>
       <ReposCards>
