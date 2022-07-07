@@ -10,4 +10,5 @@ export const InputContainer = styled.input`
   margin-bottom: ${({ marginB }) => `${marginB}px`};
   font-size: 18px;
   font-weight: 500;
+  text-align: ${({ textAlign }) => `${textAlign}`};
 `;

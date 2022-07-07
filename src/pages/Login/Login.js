@@ -15,16 +15,22 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import api from "../../utils/api-base";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../store/ActionsType";
 
 const Login = () => {
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await api.get(`${username}`);
-      console.log(response.data);
+      dispatch(addUser(response.data));
+      navigate("/repositorios", { replace: true });
       toast.success("Seja Bem-vindo");
     } catch (error) {
       toast.error("username inválido");
