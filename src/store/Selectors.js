@@ -6,6 +6,10 @@ const SelectorsData = {
   getRpos(state) {
     return state?.repos;
   },
+
+  getLogado(state) {
+    return state?.logado;
+  },
 };
 
 export default SelectorsData;

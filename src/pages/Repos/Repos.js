@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import SelectorsData from "../../store/Selectors";
 import Input from "../../components/Input/Input";
 import api from "../../utils/api-base";
+import Lottie from "react-lottie";
+import animationData from "../../assets/lotties/98288-loading.json";
 
 import {
   ReposContainer,
@@ -11,6 +13,8 @@ import {
   ReposCards,
 } from "./Repos.Elements";
 import Card from "../../components/Card/Card";
+import axios from "axios";
+import Pagineted from "../../components/Paginated/Pagineted";
 
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -30,29 +34,38 @@ const Repos = () => {
   const user = useSelector(SelectorsData.getUser);
   const [reposit, setReposit] = useState();
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const testeValue = useDebounce(search, 1000);
-  console.log(user);
+  console.log(reposit);
+
+  console.log(page);
 
   const handleRepos = async () => {
+    setLoading(true);
     try {
-      const response = await api.get(user?.repos_url);
+      const response = await api.get(
+        `${user?.repos_url}?per_page=10&page=${page}&order=DESC`
+      );
       setReposit(response.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // ?q=${search} user%3A${user?.login} in%3Aname
-
   const handleSearch = async () => {
     try {
-      const response = await api.get(`https://api.github.com/search/repositories?`, {
-        params: {
-          q: `${search} user:${user?.login} in:name`,
-          
+      const response = await axios.get(
+        `https://api.github.com/search/repositories`,
+        {
+          params: {
+            q: `${search} user:${user?.login} in:name`,
+          },
         }
-
-      });
+      );
       setReposit(response.data.items);
     } catch (error) {
       console.log(error);
@@ -60,20 +73,21 @@ const Repos = () => {
   };
 
   useEffect(() => {
-    if(testeValue.trim()){
-      handleSearch()
+    if (testeValue.trim()) {
+      handleSearch();
     } else {
       handleRepos();
     }
-  }, [testeValue]); //eslint-disable-line
+  }, [testeValue, page]); //eslint-disable-line
 
-  useEffect(() => {
-    handleRepos();
-  }, []); //eslint-disable-line
-
-  useEffect(() => {}, [search]);
-
-  console.log(reposit);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <ReposContainer>
@@ -84,15 +98,26 @@ const Repos = () => {
           placeholder="Pesquise por seus repositorios"
           textAlign="center"
           value={search}
-          onChange={(e) => setSearch(e.target.value)
-          }
+          onChange={(e) => setSearch(e.target.value)}
         />
       </ReposContent>
-      <ReposCards>
-        {reposit?.map((repo, idx) => {
-          return <Card key={idx} name={repo?.name} link={repo?.html_url} />;
-        })}
-      </ReposCards>
+      {loading ? (
+        <Lottie options={defaultOptions} height={400} width={400} />
+      ) : (
+        <ReposCards>
+          {reposit?.map((repo, idx) => {
+            return (
+              <Card
+                created_at={repo?.created_at}
+                key={idx}
+                name={repo?.name}
+                link={repo?.html_url}
+              />
+            );
+          })}
+        </ReposCards>
+      )}
+      <Pagineted page={page} setPage={setPage} reposit={reposit} />
     </ReposContainer>
   );
 };

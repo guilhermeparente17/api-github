@@ -17,7 +17,7 @@ import api from "../../utils/api-base";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addUser } from "../../store/ActionsType";
+import { addLogado, addUser } from "../../store/ActionsType";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -28,12 +28,13 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const response = await api.get(`${username}`);
+      const response = await api.get(`users/${username}`);
       dispatch(addUser(response.data));
+      dispatch(addLogado(true));
       navigate("/repositorios", { replace: true });
       toast.success("Seja Bem-vindo");
     } catch (error) {
-      toast.error("username inválido");
+      toast.error("ocorreu um erro, tente novamente.");
       console.log(error);
     }
   };
@@ -56,6 +57,7 @@ const Login = () => {
               type="text"
               marginB={30}
             />
+
             <Button type="submit" title="entrar"></Button>
           </LoginForm>
         </LoginSimpleForm>

@@ -35,4 +35,6 @@ export const HeaderUser = styled.a`
   }
 `;
 
-export const HeaderLogout = styled.div``;
+export const HeaderLogout = styled.div`
+  cursor: pointer;
+`;

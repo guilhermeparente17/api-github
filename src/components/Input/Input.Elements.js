@@ -11,4 +11,11 @@ export const InputContainer = styled.input`
   font-size: 18px;
   font-weight: 500;
   text-align: ${({ textAlign }) => `${textAlign}`};
+  transition: 0.2s ease-in-out;
+
+  @media screen and (max-width: 550px) {
+    width: 200px;
+    font-size: 14px;
+    transition: 0.2s ease-in-out;
+  }
 `;

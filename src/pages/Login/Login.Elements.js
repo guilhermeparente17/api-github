@@ -62,6 +62,13 @@ export const LoginSimpleForm = styled.div`
   background-color: #7ba7c6;
   border-radius: 15px;
   margin-top: -150px;
+  transition: 0.2s ease-in-out;
+
+  @media screen and (max-width: 550px) {
+    width: 302px;
+    transition: 0.2s ease-in-out;
+    margin-top: -50px;
+  }
 `;
 
 export const LoginForm = styled.form`
@@ -78,9 +85,24 @@ export const LoginFormTitle = styled.h1`
   font-weight: 700;
   color: #003141;
   margin-top: -60px;
+  transition: 0.2s ease-in-out;
+
+  @media screen and (max-width: 550px) {
+    font-size: 25px;
+    transition: 0.2s ease-in-out;
+  }
 `;
 
-export const LoginFormSubTitle = styled.h3`
+export const LoginFormSubTitle = styled.span`
   color: #003141;
   margin-bottom: 40px;
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+  transition: 0.2s ease-in-out;
+
+  @media screen and (max-width: 550px) {
+    font-size: 20px;
+    transition: 0.2s ease-in-out;
+  }
 `;
