@@ -10,6 +10,12 @@ const SelectorsData = {
   getLogado(state) {
     return state?.logado;
   },
+  getBranch(state) {
+    return state?.branch;
+  },
+  getBranchName(state) {
+    return state?.branchName;
+  },
 };
 
 export default SelectorsData;

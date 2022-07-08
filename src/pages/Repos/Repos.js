@@ -37,9 +37,6 @@ const Repos = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const testeValue = useDebounce(search, 1000);
-  console.log(reposit);
-
-  console.log(page);
 
   const handleRepos = async () => {
     setLoading(true);

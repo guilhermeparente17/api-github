@@ -6,8 +6,6 @@ const Pagineted = ({ page, setPage, reposit }) => {
   if (page < 1) {
     setPage(1);
   }
-
-  console.log(page);
   return (
     <PaginetedContainer>
       {page !== 1 && (

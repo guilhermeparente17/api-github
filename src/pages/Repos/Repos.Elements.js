@@ -26,7 +26,7 @@ export const ReposCards = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  margin-top: 100px;
+  margin-top: 50px;
 
   @media screen and (max-width: 1460px) {
     grid-template-columns: repeat(3, 1fr);

@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const BranchCardContainer = styled.div`
+export const BranchCardContainer = styled(Link)`
   width: 40%;
-  height: 50px;
+  height: 60px;
   background-color: #003141;
   border-radius: 30px;
   margin: 15px 0px;
@@ -10,11 +11,13 @@ export const BranchCardContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
+  cursor: pointer;
+  min-width: 300px;
 `;
 
 export const BranchCardName = styled.span`
   padding: 20px;
   color: #fff;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 500;
 `;

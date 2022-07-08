@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SelectorsData from "../../store/Selectors";
 import api from "../../utils/api-base";
 import { Link, useParams } from "react-router-dom";
@@ -13,22 +13,30 @@ import {
   BranchButton,
 } from "./Branchs.elements";
 import BranchCard from "../../components/BranchCard/BranchCard";
+import { addBranchName } from "../../store/ActionsType";
+import animationData from "../../assets/lotties/98288-loading.json";
+import Lottie from "react-lottie";
 
 const Branchs = () => {
   const user = useSelector(SelectorsData.getUser); //eslint-disable-line
   const branchName = useParams();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  dispatch(addBranchName(branchName));
   const [branchs, setBranchs] = useState();
 
   const handleBranchs = async () => {
-    //eslint-disable-line
+    setLoading(true)
     try {
+      
       const response = await api.get(
         `/repos/${user?.login}/${branchName.nome}/branches`
       );
       setBranchs(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -36,7 +44,14 @@ const Branchs = () => {
     handleBranchs();
   }, []); //eslint-disable-line
 
-  console.log(branchs);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <BranchsContainer>
@@ -48,11 +63,11 @@ const Branchs = () => {
           <BranchsTitle>Branches</BranchsTitle>
         </BranchHeader>
 
-        <BranchsContent>
+        {loading ? <Lottie options={defaultOptions} height={400} width={400} /> : <BranchsContent>
           {branchs?.map((branch, idx) => {
             return <BranchCard key={idx} branch={branch} />;
           })}
-        </BranchsContent>
+        </BranchsContent>}
       </BranchSection>
     </BranchsContainer>
   );
