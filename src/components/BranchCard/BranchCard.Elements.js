@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const BranchCardContainer = styled(Link)`
-  width: 40%;
+  width: 30%;
   height: 60px;
   background-color: #003141;
   border-radius: 30px;

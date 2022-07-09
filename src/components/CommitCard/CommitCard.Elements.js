@@ -18,11 +18,7 @@ export const CommitCardContainer = styled.div`
   }
 
   @media screen and (max-width: 539px){
-    height: 200px ;
-  }
-
-  @media screen and (max-width: 383px){
-    height: 250px ;
+    height: 300px ;
   }
 `;
 
